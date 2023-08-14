@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Users\Interfaces\IUserRepository;
+use App\Services\Users\Interfaces\IUserService;
+use App\Services\Users\Repository\UserRepository;
+use App\Services\Users\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->registerUser();
     }
 
     /**
@@ -20,5 +24,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+    }
+
+    private function registerUser(): void
+    {
+        //Repositories
+        $this->app->bind(IUserRepository::class,UserRepository::class);
+
+        //Services
+        $this->app->bind(IUserService::class,UserService::class);
+
     }
 }

@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Enums\UserStatusesEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property int $status_id
+ * @property UserStatusesEnum $status
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -24,8 +33,14 @@ class User extends Authenticatable
         'status_id',
     ];
 
-    public function status(): BelongsTo
+    protected $appends = [
+        "status"
+    ];
+
+
+
+    public function getStatusAttribute() : UserStatusesEnum
     {
-        return $this->belongsTo(UserStatus::class);
+        return UserStatusesEnum::from($this->status_id);
     }
 }
