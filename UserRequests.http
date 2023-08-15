@@ -1,0 +1,9 @@
+### User is Blocked
+GET {{url}}/users/profile
+Authorization: Basic {{blocked_email}}
+Accept: Application/json
+
+### User is Active
+GET {{url}}/users/profile
+Authorization: Basic {{active_email}}
+Accept: Application/json
