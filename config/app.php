@@ -159,6 +159,8 @@ return [
         /*
          * Package Service Providers...
          */
+        \Milito\ResponseGenerator\Providers\MilitoResponseGeneratorServiceProvider::class,
+
 
         /*
          * Application Service Providers...

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa322c53454393ed775cfe4807d54a50",
+    "content-hash": "0db814b8deb1536a8c2c250f8594fdfc",
     "packages": [
         {
             "name": "brick/math",
@@ -1807,6 +1807,57 @@
                 }
             ],
             "time": "2023-08-05T12:09:49+00:00"
+        },
+        {
+            "name": "milito/response-generator",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milito-78/response-generator.git",
+                "reference": "90385f77fdc86a7b321c9783017a529b7a23cbe0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milito-78/response-generator/zipball/90385f77fdc86a7b321c9783017a529b7a23cbe0",
+                "reference": "90385f77fdc86a7b321c9783017a529b7a23cbe0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.10",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Milito\\ResponseGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milito",
+                    "email": "milad.purahmad78@gmail.com"
+                }
+            ],
+            "description": "I use this package to make it easier to modify the structure of json responses.",
+            "keywords": [
+                "json",
+                "laravel",
+                "milito",
+                "response",
+                "structure"
+            ],
+            "support": {
+                "issues": "https://github.com/milito-78/response-generator/issues",
+                "source": "https://github.com/milito-78/response-generator/tree/v1.0.0"
+            },
+            "time": "2022-10-14T19:22:40+00:00"
         },
         {
             "name": "monolog/monolog",
