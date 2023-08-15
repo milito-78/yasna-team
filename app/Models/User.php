@@ -52,4 +52,18 @@ class User extends Authenticatable
             $this->id,$this->name,$this->email,$this->status,$this->created_at,$this->updated_at
         );
     }
+
+    public static function fromEntity(UserEntity $userEntity) : User
+    {
+        $user               = new User();
+        $user->id           = $userEntity->id;
+        $user->name         = $userEntity->name;
+        $user->email        = $userEntity->email;
+        $user->status       = $userEntity->status;
+        $user->status_id    = $userEntity->status->value;
+        $user->created_at   = $userEntity->created_at;
+        $user->updated_at   = $userEntity->updated_at;
+        return $user;
+    }
+
 }

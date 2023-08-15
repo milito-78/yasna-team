@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use App\Services\Users\Interfaces\IUserService;
 use Closure;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class AuthMiddleware
             abort(403);
         }
 
-        auth()->setUser($user->toUser());
+        auth()->setUser(User::fromEntity($user));
 
         return $next($request);
     }
