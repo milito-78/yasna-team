@@ -37,18 +37,6 @@ class UserEntity
         return $user;
     }
 
-    public static function fromUser(User $user): UserEntity
-    {
-        return new static(
-            $user->id,
-            $user->name,
-            $user->email,
-            $user->status,
-            $user->created_at,
-            $user->updated_at
-        );
-    }
-
     public function toArray() : array
     {
         return [

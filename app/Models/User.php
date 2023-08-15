@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Enums\UserStatusesEnum;
+use App\Services\Users\Entities\UserEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property UserStatusesEnum $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
  */
 class User extends Authenticatable
 {
@@ -38,9 +40,16 @@ class User extends Authenticatable
     ];
 
 
-
     public function getStatusAttribute() : UserStatusesEnum
     {
         return UserStatusesEnum::from($this->status_id);
+    }
+
+
+    public function toEntity() : UserEntity
+    {
+        return new UserEntity(
+            $this->id,$this->name,$this->email,$this->status,$this->created_at,$this->updated_at
+        );
     }
 }

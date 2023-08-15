@@ -30,6 +30,6 @@ class UserRepository implements IUserRepository
 
     private function wrapWithEntity(User $user): UserEntity
     {
-        return UserEntity::fromUser($user);
+        return $user->toEntity();
     }
 }
