@@ -17,7 +17,10 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        //Todo change response to a unique structure
-        return new UserResource($user);
+        return success_json()
+                ->succeeded()
+                ->message("Success")
+                ->data( new UserResource($user))
+                ->send();
     }
 }
