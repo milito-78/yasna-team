@@ -10,6 +10,7 @@ class UserEntity
 {
     public function __construct(
         public int $id,
+        public string $name,
         public string $email,
         public UserStatusesEnum $status,
         public Carbon $created_at,
@@ -18,10 +19,29 @@ class UserEntity
     {
     }
 
-    public static function fromUser(User $user): self
+    public function isBlocked() : bool
     {
-        return new self(
+        return $this->status == UserStatusesEnum::Block;
+    }
+
+    public function toUser() : User
+    {
+        $user               = new User();
+        $user->id           = $this->id;
+        $user->name         = $this->name;
+        $user->email        = $this->email;
+        $user->status       = $this->status;
+        $user->status_id    = $this->status->value;
+        $user->created_at   = $this->created_at;
+        $user->updated_at   = $this->updated_at;
+        return $user;
+    }
+
+    public static function fromUser(User $user): UserEntity
+    {
+        return new static(
             $user->id,
+            $user->name,
             $user->email,
             $user->status,
             $user->created_at,
@@ -33,6 +53,7 @@ class UserEntity
     {
         return [
             "id"            => $this->id,
+            "name"          => $this->name,
             "email"         => $this->email,
             "status"        => $this->status,
             "created_at"    => $this->created_at,
