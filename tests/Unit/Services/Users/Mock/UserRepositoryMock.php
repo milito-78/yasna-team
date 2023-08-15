@@ -14,6 +14,12 @@ class UserRepositoryMock implements IUserRepository
         $this->userData = $userData;
     }
 
+    /**
+     * Mock findUserByEmail function
+     *
+     * @param string $email
+     * @return UserEntity|null
+     */
     public function findUserByEmail(string $email): ?UserEntity
     {
         foreach ($this->userData as $user) {

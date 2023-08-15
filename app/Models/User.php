@@ -45,6 +45,16 @@ class User extends Authenticatable
         return UserStatusesEnum::from($this->status_id);
     }
 
+    public function scopeActiveUser($query)
+    {
+        return $query->where("status_id" , UserStatusesEnum::Active->value);
+    }
+
+    public function scopeBlockedUser($query)
+    {
+        return $query->where("status_id" , UserStatusesEnum::Block->value);
+    }
+
 
     public function toEntity() : UserEntity
     {

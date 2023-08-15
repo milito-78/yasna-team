@@ -12,7 +12,7 @@ class UserRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function seedDb()
+    private function seedDb(): void
     {
         $this->seed([
             UserSeeder::class
