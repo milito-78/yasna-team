@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Users;
+namespace Tests\Unit\Services\Users;
 
 use App\Models\Enums\UserStatusesEnum;
 use App\Services\Users\Entities\UserEntity;
@@ -13,7 +13,7 @@ class UserEntityTest extends TestCase
     /**
      * Test user is blocked
      */
-    public function testIsBlocked()
+    public function test_is_blocked()
     {
         $userEntity = new UserEntity(
             1,
@@ -30,7 +30,7 @@ class UserEntityTest extends TestCase
     /**
      * Test toArray function
      */
-    public function testToArray()
+    public function test_to_array()
     {
         $createdAt = Carbon::now();
         $updatedAt = Carbon::now()->addHour();
