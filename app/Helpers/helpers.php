@@ -11,3 +11,15 @@ if (!function_exists("failed_json")){
         return \Milito\ResponseGenerator\Facades\MilitoResponseGenerator::failed();
     }
 }
+
+
+if (!function_exists("logError")){
+    function logError($error , string $message = "" , array $data  = [] , string $step = ""): void
+    {
+        $step = $step != "" ? $step : "#1";
+        $message = $step . " "  . ($message != "" ? $message : "Error : " .$error->getMessage());
+        $data = count($data) ? $data : ["exception" => $error];
+
+        logger()->error(  $message, $data);
+    }
+}

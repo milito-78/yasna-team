@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Products\Interfaces\IProductRepository;
+use App\Services\Products\Repositories\ProductRepository;
 use App\Services\Users\Interfaces\IUserRepository;
 use App\Services\Users\Interfaces\IUserService;
 use App\Services\Users\Repository\UserRepository;
@@ -17,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerUser();
+
+        $this->registerProduct();
     }
 
     /**
@@ -47,5 +51,13 @@ class AppServiceProvider extends ServiceProvider
         //Services
         $this->app->bind(IUserService::class,UserService::class);
 
+    }
+
+    private function registerProduct(): void
+    {
+        //Repositories
+        $this->app->bind(IProductRepository::class,ProductRepository::class);
+
+        //Services
     }
 }
