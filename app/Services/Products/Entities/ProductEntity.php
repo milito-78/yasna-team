@@ -10,7 +10,7 @@ class ProductEntity
     public function __construct(
         public int $id,
         public string $name,
-        public int $old_price,
+        public ?int $old_price,
         public int $price,
         public int $quantity,
         public ProductStatusesEnum $status,
