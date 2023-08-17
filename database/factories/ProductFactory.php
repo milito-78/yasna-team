@@ -13,10 +13,12 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $price = $this->faker->numberBetween(100,99999);
+        $old = $this->faker->numberBetween(0,$price + ($price * 0.2));
+
         return [
             "name"      => $this->faker->word(),
             "status_id" => ProductStatusesEnum::Active,
-            "old_price" => $this->faker->numberBetween(0,$price / 2),
+            "old_price" => $old <= $price ? null : $old,
             "price"     => $price,
             "image"     => $this->faker->filePath()
         ];
