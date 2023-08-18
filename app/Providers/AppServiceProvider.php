@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Services\Products\Interfaces\IProductRepository;
+use App\Services\Products\Interfaces\IProductService;
 use App\Services\Products\Repositories\ProductRepository;
+use App\Services\Products\Services\ProductService;
 use App\Services\Users\Interfaces\IUserRepository;
 use App\Services\Users\Interfaces\IUserService;
 use App\Services\Users\Repository\UserRepository;
@@ -59,5 +61,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IProductRepository::class,ProductRepository::class);
 
         //Services
+        $this->app->bind(IProductService::class,ProductService::class);
     }
 }

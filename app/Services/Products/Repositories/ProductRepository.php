@@ -12,6 +12,7 @@ use App\Services\Products\Interfaces\IProductRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements IProductRepository
 {
@@ -59,6 +60,7 @@ class ProductRepository implements IProductRepository
             throw new ProductNotFoundException();
 
         try {
+            DB::statement("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ");
             $product->changes()->create([
                 "product_id"        => $productChange->product_id,
                 "count"             => $productChange->count,

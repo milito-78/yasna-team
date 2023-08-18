@@ -1,0 +1,13 @@
+### Get Products list with paginate
+GET {{url}}/products
+Accept: Application/json
+
+
+### Get Products list with paginate with paramters
+GET {{url}}/products?name=test&per_page=10&page=1
+Accept: Application/json
+
+
+### Get Product detail
+GET {{url}}/products/10
+Accept: Application/json

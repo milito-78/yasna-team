@@ -2,15 +2,16 @@
 
 namespace App\Infrastructure\Paginator;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 
-class CustomSimplePaginate
+class CustomSimplePaginate implements Arrayable
 {
     public function __construct(
         private readonly Collection $items,
         private readonly int $per_page,
         private readonly int $current_page,
-        private readonly ?int $next_page,
+        private readonly ?int $next_page = null,
     )
     {
     }
