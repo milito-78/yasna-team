@@ -128,11 +128,22 @@ class OrderController extends Controller
             return failed_json()->code(500)->message("There is an error during create order.")->send();
         }
 
-        //TODO payment gateway
+        try {
+            $purchase = $this->orderService->StartPayment($order,$request->validated("gateway"));
+        }catch (Throwable $exception){
+            logError($exception,"Error during start payment in controller",["exception" => $exception],"03");
+            $this->orderService->DeleteOrderForUser($user->id,$order->id);
+            $this->productService->UnlockProductsCountForReason(new ProductsChangeInput($request->validated("items"),ProductChangeReasonsEnum::Order,Order::class,$order->id));
+            return failed_json()->code(500)->message("There is an error during create order.")->send();
+        }
+
         return success_json()
             ->created()
             ->message("Order submitted successfully")
-            ->data(new OrderResource($order))
+            ->data([
+                "order" => new OrderResource($order),
+                "redirect_to_gateway" => $purchase->redirect_path
+            ])
             ->send();
     }
 }

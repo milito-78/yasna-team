@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Orders;
 
+use App\Models\Enums\PaymentGatewayEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -18,6 +19,7 @@ class CreateRequest extends FormRequest
             "items"         => "required|array",
             "items.*.id"    => "required|integer|gt:0",
             "items.*.count" => "required|integer|gt:0",
+            "gateway"       => "required|string|in:" . PaymentGatewayEnum::validationNames(),
         ];
     }
 }

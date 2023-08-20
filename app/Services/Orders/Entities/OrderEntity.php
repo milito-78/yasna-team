@@ -18,6 +18,7 @@ class OrderEntity
      * @param Carbon $created_at
      * @param Carbon $updated_at
      * @param Collection<OrderItemEntity> $items
+     * @param TransactionEntity|null $transaction
      */
     public function __construct(
         public int $id,
@@ -28,7 +29,8 @@ class OrderEntity
         public OrderStatusesEnum $status,
         public Carbon $created_at,
         public Carbon $updated_at,
-        public Collection $items = new Collection()
+        public Collection $items = new Collection(),
+        public ?TransactionEntity $transaction = null,
     )
     {
     }

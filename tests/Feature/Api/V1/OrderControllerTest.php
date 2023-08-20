@@ -3,11 +3,18 @@
 namespace Tests\Feature\Api\V1;
 
 use App\Infrastructure\Paginator\CustomSimplePaginate;
+use App\Infrastructure\Payments\Contracts\PaymentMethod;
+use App\Infrastructure\Payments\Factory;
+use App\Infrastructure\Payments\Models\PurchaseResult;
 use App\Models\Enums\OrderStatusesEnum;
+use App\Models\Enums\PaymentGatewayEnum;
 use App\Models\Enums\ProductStatusesEnum;
+use App\Models\Enums\TransactionStatusEnum;
 use App\Models\User;
 use App\Services\Orders\Entities\OrderEntity;
 use App\Services\Orders\Entities\OrderItemEntity;
+use App\Services\Orders\Entities\StartPaymentResult;
+use App\Services\Orders\Entities\TransactionEntity;
 use App\Services\Orders\Interfaces\IOrderService;
 use App\Services\Products\Entities\ProductEntity;
 use App\Services\Products\Interfaces\IProductService;
@@ -200,6 +207,13 @@ class OrderControllerTest extends TestCase
         $user = User::query()->activeUser()->first();
 
         $this->mock(IOrderService::class,function (MockInterface $mock) use($user){
+            $mock->shouldReceive("StartPayment")
+                ->withAnyArgs()
+                ->andReturn(new StartPaymentResult(
+                    new TransactionEntity(
+                        1,"sdds",1,200,null,null,TransactionStatusEnum::Started,PaymentGatewayEnum::MilitoPayment,null,now(),now()
+                    ),"http://redircet.test",true
+                ));
             return $mock
                 ->shouldReceive("SubmitOrder")
                 ->once()
@@ -222,6 +236,7 @@ class OrderControllerTest extends TestCase
                     )
                 );
         });
+
         $this->mock(IProductService::class,function (MockInterface $mock) use($user){
             $mock->shouldReceive("LockProductsCountForReason")->once()->withAnyArgs()->andReturn();
             return $mock
@@ -249,22 +264,28 @@ class OrderControllerTest extends TestCase
                 "id" => 1,
                 "count" => 1
                 ]
-            ]
+            ],
+            "gateway" => "milito"
         ]);
         $response->assertStatus(201);
         $response->assertJsonStructure([
             "message",
             "success",
             "data" => [
-                "id",
-                "total_price",
-                "pay_price",
-                "discount_price",
-                "status",
-                "status_text",
-                "created_at",
-                "updated_at",
+                "order" => [
+                    "id",
+                    "total_price",
+                    "pay_price",
+                    "discount_price",
+                    "status",
+                    "status_text",
+                    "created_at",
+                    "updated_at",
+                ],
+                "redirect_to_gateway"
             ]
         ]);
     }
+
+
 }

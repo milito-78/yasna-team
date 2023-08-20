@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -42,6 +45,16 @@ class Order extends Model
     public function getStatusAttribute() : OrderStatusesEnum
     {
         return OrderStatusesEnum::from($this->status_id);
+    }
+
+    public function latestTransaction():MorphOne
+    {
+        return $this->morphOne(Transaction::class,"transactionable")->latest();
+    }
+
+    public function transactions():MorphMany
+    {
+        return $this->morphMany(Transaction::class,"transactionable");
     }
 
     public function user(): BelongsTo
@@ -80,7 +93,8 @@ class Order extends Model
             $this->status,
             $this->created_at,
             $this->updated_at,
-            $this->items->map(fn(OrderItem $item) => $item->toEntity())
+            $this->items->map(fn(OrderItem $item) => $item->toEntity()),
+            $this->relationLoaded("latestTransaction") ? $this->latestTransaction->toEntity(): null,
         );
     }
 }

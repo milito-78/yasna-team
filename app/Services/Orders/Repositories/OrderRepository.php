@@ -4,10 +4,17 @@ namespace App\Services\Orders\Repositories;
 
 use App\Infrastructure\Paginator\CustomSimplePaginate;
 use App\Models\Enums\OrderStatusesEnum;
+use App\Models\Enums\TransactionStatusEnum;
 use App\Models\Order;
+use App\Models\Transaction;
 use App\Services\Orders\Entities\OrderCreateInput;
 use App\Services\Orders\Entities\OrderEntity;
 use App\Services\Orders\Entities\OrderFilterInput;
+use App\Services\Orders\Entities\TransactionCreateInput;
+use App\Services\Orders\Entities\TransactionEntity;
+use App\Services\Orders\Entities\TransactionUpdateInput;
+use App\Services\Orders\Exceptions\InvalidTransactionException;
+use App\Services\Orders\Exceptions\OrderNotFoundException;
 use App\Services\Orders\Interfaces\IOrderRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,6 +27,11 @@ class OrderRepository implements IOrderRepository
     private function query(): Builder
     {
         return Order::query();
+    }
+
+    private function queryTransaction(): Builder
+    {
+        return Transaction::query();
     }
 
 
@@ -116,6 +128,67 @@ class OrderRepository implements IOrderRepository
     }
 
     /**
+     * @inheritdoc
+     */
+    public function createTransaction(TransactionCreateInput $data): ?TransactionEntity
+    {
+        /**
+         * @var ?Order $order
+         */
+        $order = $this->query()->where("id",$data->order_id)->first();
+        if (!$order)
+            throw new OrderNotFoundException();
+
+        $transaction = $this->queryTransaction()->create([
+            "user_id" => $order->user_id,
+            "price" => $data->price,
+            "uuid" => $data->uuid,
+            "payment_id" => $data->gateway->value,
+            "transactionable_type" => Order::class,
+            "transactionable_id" => $order->id,
+            "status_id" => TransactionStatusEnum::Started->value
+        ]);
+        return $this->wrapWithTransactionEntity($transaction);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOrderByTransactionUUId(string $uuid): OrderEntity
+    {
+        /**
+         * @var ?Order $order
+         */
+        $order = $this->query()
+            ->whereHas("latestTransaction",function ($query) use ($uuid){
+                return $query->where("uuid" , $uuid);
+            })
+            ->with("items")
+            ->first();
+        if (!$order)
+            throw new InvalidTransactionException();
+
+        return $this->wrapWithEntity($order);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateTransactionByUUid(TransactionUpdateInput $data): bool
+    {
+        $transaction = $this->queryTransaction()->where("uuid",$data->uuid)->first();
+        if (!$transaction)
+            throw new InvalidTransactionException();
+        $transaction->update([
+            "tracking_code" => $data->tracking_code,
+            "status" => $data->status->value,
+            "received_at" => now()
+        ]);
+
+        return true;
+    }
+
+    /**
      * Change Paginator to custom paginator
      *
      * @param Paginator $paginator
@@ -152,6 +225,17 @@ class OrderRepository implements IOrderRepository
      * @return OrderEntity
      */
     private function wrapWithEntity(Order $user): OrderEntity
+    {
+        return $user->toEntity();
+    }
+
+    /**
+     * Convert model to entity
+     *
+     * @param Transaction $user
+     * @return TransactionEntity
+     */
+    private function wrapWithTransactionEntity(Transaction $user): TransactionEntity
     {
         return $user->toEntity();
     }
