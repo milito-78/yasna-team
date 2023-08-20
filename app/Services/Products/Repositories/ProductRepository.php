@@ -85,11 +85,11 @@ class ProductRepository implements IProductRepository
      * @return CustomSimplePaginate
      */
     private function convertToSimplePaginate(Paginator $paginator):CustomSimplePaginate{
-        return new CustomSimplePaginate(
+        return customSimplePaginator(
             $this->wrapWithEntities($paginator->items()),
             $paginator->perPage(),
             $paginator->currentPage(),
-            $paginator->hasMorePages() ? $paginator->currentPage() + 1 : null
+            $paginator->hasMorePages()
         );
     }
 

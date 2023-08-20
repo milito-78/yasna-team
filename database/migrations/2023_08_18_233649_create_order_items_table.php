@@ -23,7 +23,6 @@ return new class extends Migration
                 ->references("id");
             $table->unsignedBigInteger("old_price")->nullable();
             $table->unsignedBigInteger("price");
-            $table->bigInteger("pay_price");
             $table->unsignedInteger("count");
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Infrastructure\Paginator\CustomSimplePaginate;
 use App\Infrastructure\Paginator\SimplePaginator;
 use Illuminate\Container\Container;
 use Illuminate\Pagination\Paginator;
@@ -36,7 +37,7 @@ if (!function_exists("getImageFullPath")){
 
 
 if (!function_exists("simplePaginator")) {
-    function simplePaginator(\App\Infrastructure\Paginator\CustomSimplePaginate $paginate):SimplePaginator
+    function simplePaginator(CustomSimplePaginate $paginate):SimplePaginator
     {
         $items = $paginate->items();
         $perPage = $paginate->perPage();
@@ -50,5 +51,16 @@ if (!function_exists("simplePaginator")) {
         return Container::getInstance()->makeWith(SimplePaginator::class, compact(
             'items', 'perPage', 'currentPage', 'options','hasMore'
         ));
+    }
+}
+
+if (!function_exists("customSimplePaginator")){
+    function customSimplePaginator(array|\Illuminate\Support\Collection $items,int $per_page,int $current_page,bool $has_more = false): CustomSimplePaginate{
+        return new CustomSimplePaginate(
+            is_array($items) ? collect($items) : $items,
+            $per_page,
+            $current_page,
+            $has_more ? $current_page + 1 : null
+        );
     }
 }

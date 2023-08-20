@@ -19,7 +19,6 @@ class OrderItemFactory extends Factory
             "product_id" => $product->id,
             "old_price" => 0,
             "price" => $product->price,
-            "pay_price" => $product->price,
             "count" => $product->quantity,
         ];
     }

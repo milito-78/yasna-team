@@ -16,7 +16,7 @@ class OrderFactory extends Factory
         $price = $this->faker->numberBetween(100,99999);
 
         return [
-            "user_id" => User::query()->inRandomOrder()->first()->id,
+            "user_id" => User::query()->activeUser()->first()->id,
             "total_price" => $price,
             "pay_price" => $price,
             "discount_price" => 0,

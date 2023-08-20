@@ -28,7 +28,7 @@ class OrderSeeder extends Seeder
         Order::factory(20)
             ->has(
                 OrderItem::factory()
-                    ->count(5),
+                    ->count(2),
                 "items"
             )
             ->create();

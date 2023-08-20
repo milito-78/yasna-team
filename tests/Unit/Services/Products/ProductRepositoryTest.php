@@ -203,20 +203,4 @@ class ProductRepositoryTest extends TestCase
         $repository->addChangeToProduct($change);
     }
 
-
-    private function arrays_are_similar(array $array, array $similar): bool
-    {
-
-        if (count(array_diff_assoc($array, $similar))) {
-            return false;
-        }
-
-        foreach($array as $k => $v) {
-            if ($v !== $similar[$k]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
