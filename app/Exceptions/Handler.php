@@ -10,6 +10,7 @@ use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,7 +47,7 @@ class Handler extends ExceptionHandler
             $message    = $e->getMessage();
         }
 
-        if ($e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
+        if ($e instanceof NotFoundHttpException || $e instanceof RouteNotFoundException || $e instanceof ModelNotFoundException) {
             return  failed_json()->code(404)->message("Not found")->send();
         }
 
@@ -60,6 +61,10 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof AuthorizationException || $code == 403 ) {
             return failed_json()->code(403)->message("Un authorized")->send();
+        }
+
+        if ( $code == 405 ) {
+            return failed_json()->code(405)->message("Method not allowed")->send();
         }
 
         if ($e->getCode() == 500 || $e->getCode() < 100 || $e->getCode() >= 600){

@@ -6,7 +6,10 @@ use App\Infrastructure\Paginator\CustomSimplePaginate;
 use App\Services\Products\Entities\ProductChangeInput;
 use App\Services\Products\Entities\ProductEntity;
 use App\Services\Products\Entities\ProductFilterInput;
+use App\Services\Products\Entities\ProductsChangeInput;
 use App\Services\Products\Exceptions\ProductNotFoundException;
+use Illuminate\Support\Collection;
+use Throwable;
 
 interface IProductService
 {
@@ -61,4 +64,44 @@ interface IProductService
      * @throws ProductNotFoundException
      */
     public function DecreaseCountForReason(ProductChangeInput $input) : bool;
+
+    /**
+     * Get products with their ids
+     * @param array $ids
+     * @return Collection
+     */
+    public function GetProductsInId(array $ids): Collection;
+
+    /**
+     * Lock products count for reason
+     *
+     * @param ProductsChangeInput $input
+     * @throws ProductNotFoundException|Throwable
+     */
+    public function LockProductsCountForReason(ProductsChangeInput $input):void;
+
+    /**
+     * Unlock products count for reason
+     *
+     * @param ProductsChangeInput $input
+     * @throws ProductNotFoundException|Throwable
+     */
+    public function UnlockProductsCountForReason(ProductsChangeInput $input):void;
+
+    /**
+     * Decrease products count for reason
+     *
+     * @param ProductsChangeInput $input
+     * @throws ProductNotFoundException|Throwable
+     */
+    public function DecreaseProductsCountForReason(ProductsChangeInput $input):void;
+
+    /**
+     * Increase products count for reason
+     *
+     * @param ProductsChangeInput $input
+     * @throws ProductNotFoundException|Throwable
+     */
+    public function IncreaseProductsCountForReason(ProductsChangeInput $input):void;
+
 }

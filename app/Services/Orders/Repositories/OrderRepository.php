@@ -93,6 +93,7 @@ class OrderRepository implements IOrderRepository
         $orders = $this->query()
             ->userId($user)
             ->filter(array_filter($filter->toArray(),fn($value) => !is_null($value)))
+            ->with("items")
             ->latest("id")
             ->simplePaginate(perPage: $filter->per_page,page: $filter->page);
         return $this->convertToSimplePaginate($orders);

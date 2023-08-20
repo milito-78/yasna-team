@@ -4,6 +4,7 @@ use App\Infrastructure\Paginator\CustomSimplePaginate;
 use App\Infrastructure\Paginator\SimplePaginator;
 use Illuminate\Container\Container;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Carbon;
 
 if (!function_exists("success_json")){
     function success_json(): \Milito\ResponseGenerator\States\Success\SuccessState{
@@ -62,5 +63,12 @@ if (!function_exists("customSimplePaginator")){
             $current_page,
             $has_more ? $current_page + 1 : null
         );
+    }
+}
+
+if (! function_exists("resourceDateTimeFormat")){
+    function resourceDateTimeFormat(Carbon $time = null): string
+    {
+        return (! is_null($time)) ? $time->toDateTimeString() : Carbon::now();
     }
 }

@@ -82,4 +82,9 @@ class ProductRepositoryMock implements IProductRepository
 
         return true;
     }
+
+    public function getProductsWithIds(array $ids): Collection
+    {
+        // TODO: Implement getProductsWithIds() method.
+    }
 }

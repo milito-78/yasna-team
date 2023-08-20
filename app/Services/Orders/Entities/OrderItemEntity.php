@@ -2,10 +2,13 @@
 
 namespace App\Services\Orders\Entities;
 
+use App\Services\Products\Entities\ProductEntity;
 use Illuminate\Support\Carbon;
 
 class OrderItemEntity
 {
+    public ?ProductEntity $product = null;
+
     public function __construct(
         public int $id,
         public int $order_id,
@@ -17,6 +20,11 @@ class OrderItemEntity
         public Carbon $updated_at,
     )
     {
+    }
+
+    public function setProduct(ProductEntity $productEntity): void
+    {
+        $this->product = $productEntity;
     }
 
     public function toArray() : array

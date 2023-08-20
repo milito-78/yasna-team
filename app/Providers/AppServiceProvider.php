@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Orders\Interfaces\IOrderRepository;
+use App\Services\Orders\Interfaces\IOrderService;
+use App\Services\Orders\Repositories\OrderRepository;
+use App\Services\Orders\Services\OrderService;
 use App\Services\Products\Interfaces\IProductRepository;
 use App\Services\Products\Interfaces\IProductService;
 use App\Services\Products\Repositories\ProductRepository;
@@ -23,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerUser();
 
         $this->registerProduct();
+
+        $this->registerOrder();
     }
 
     /**
@@ -62,5 +68,14 @@ class AppServiceProvider extends ServiceProvider
 
         //Services
         $this->app->bind(IProductService::class,ProductService::class);
+    }
+
+    private function registerOrder(): void
+    {
+        //Repositories
+        $this->app->bind(IOrderRepository::class,OrderRepository::class);
+
+        //Services
+        $this->app->bind(IOrderService::class,OrderService::class);
     }
 }

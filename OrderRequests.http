@@ -1,0 +1,25 @@
+### Get User orders
+GET {{url}}/orders
+Authorization: Basic {{active_email}}
+Accept: Application/json
+
+
+### Get User order details
+GET {{url}}/orders/1
+Authorization: Basic {{active_email}}
+Accept: Application/json
+
+### Submit new order
+POST {{url}}/orders/create
+Authorization: Basic {{active_email}}
+Accept: Application/json
+Content-Type: application/json
+
+{
+    "items": [
+        {
+            "id" : 1,
+            "count" : 2
+        }
+    ]
+}

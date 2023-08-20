@@ -60,7 +60,7 @@ class ProductRepository implements IProductRepository
             throw new ProductNotFoundException();
 
         try {
-            DB::statement("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ");
+            DB::beginTransaction();
             $product->changes()->create([
                 "product_id"        => $productChange->product_id,
                 "count"             => $productChange->count,
@@ -70,11 +70,26 @@ class ProductRepository implements IProductRepository
                 "type"              => $productChange->type,
                 "status"            => $productChange->status,
             ]);
+            DB::commit();
             return true;
         }catch (\Throwable $exception){
+            DB::commit();
             logError($exception,"Error during create new change for product",$productChange->toArray());
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProductsWithIds(array $ids): Collection
+    {
+        /**
+         * @var Collection $products
+         */
+        $products = $this->query()->activeProduct()->whereIn("id",$ids)->get();
+
+        return $products->map(fn(Product $product) => $product->toEntity());
     }
 
 

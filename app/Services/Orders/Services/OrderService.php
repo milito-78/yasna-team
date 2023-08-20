@@ -46,8 +46,8 @@ class OrderService implements IOrderService
         $price = 0;
 
         $itemsData = array_map(function ($product) use(&$price,&$total_price){
-            $price += $product["price"];
-            $total_price += is_null($product["old_price"]) ? $product["price"]:$product["old_price"];
+            $price += $product["price"] * $product["count"];
+            $total_price += (is_null($product["old_price"]) ? $product["price"]:$product["old_price"]) * $product["count"];
 
             return new OrderItemCreateInput(
                 $product["product_id"],

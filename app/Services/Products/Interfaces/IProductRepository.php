@@ -7,6 +7,7 @@ use App\Services\Products\Entities\ProductChangeEntity;
 use App\Services\Products\Entities\ProductEntity;
 use App\Services\Products\Entities\ProductFilterInput;
 use App\Services\Products\Exceptions\ProductNotFoundException;
+use Illuminate\Support\Collection;
 
 interface IProductRepository
 {
@@ -36,4 +37,10 @@ interface IProductRepository
      */
     public function addChangeToProduct(ProductChangeEntity $productChange): bool;
 
+    /**
+     * Get products with ids
+     * @param array $ids
+     * @return Collection
+     */
+    public function getProductsWithIds(array $ids):Collection;
 }
