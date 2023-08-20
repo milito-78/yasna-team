@@ -8,6 +8,17 @@ use Illuminate\Support\Collection;
 
 class OrderEntity
 {
+    /**
+     * @param int $id
+     * @param int $user_id
+     * @param int $total_price
+     * @param int $pay_price
+     * @param int|null $discount_price
+     * @param OrderStatusesEnum $status
+     * @param Carbon $created_at
+     * @param Carbon $updated_at
+     * @param Collection<OrderItemEntity> $items
+     */
     public function __construct(
         public int $id,
         public int $user_id,
