@@ -4,6 +4,7 @@
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\GatewaysCallbackController;
 use Illuminate\Support\Facades\Route;
 
 //User Routes
@@ -21,3 +22,6 @@ Route::group(["prefix" => "orders","middleware" => "customAuth"],function (){
     Route::get("/{order}",      [OrderController::class ,"show"]);
     Route::post("/create",      [OrderController::class ,"store"]);
 });
+
+
+Route::get("/gateway-callback/{gateway}",[GatewaysCallbackController::class, "callback"]);

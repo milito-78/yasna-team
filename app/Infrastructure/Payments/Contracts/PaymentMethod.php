@@ -3,6 +3,7 @@ namespace App\Infrastructure\Payments\Contracts;
 
 
 use App\Infrastructure\Payments\Exceptions\ServiceUnreachableException;
+use App\Infrastructure\Payments\Models\InquiryResult;
 use App\Infrastructure\Payments\Models\Invoice;
 use App\Infrastructure\Payments\Models\PurchaseResult;
 
@@ -22,8 +23,8 @@ interface PaymentMethod
      * Check and validate payment with uuid
      *
      * @param string $uuid
-     * @return bool
+     * @return InquiryResult
      * @throws ServiceUnreachableException
      */
-    public function inquiryPayment(string $uuid): bool;
+    public function inquiryPayment(string $uuid): InquiryResult;
 }

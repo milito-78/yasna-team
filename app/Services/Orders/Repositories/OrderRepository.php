@@ -181,7 +181,7 @@ class OrderRepository implements IOrderRepository
             throw new InvalidTransactionException();
         $transaction->update([
             "tracking_code" => $data->tracking_code,
-            "status" => $data->status->value,
+            "status_id" => $data->status->value,
             "received_at" => now()
         ]);
 

@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Payments\Dirvers\Milito;
+namespace App\Infrastructure\Payments\Drivers;
 
 use App\Infrastructure\Payments\Contracts\PaymentMethod;
 use App\Infrastructure\Payments\Exceptions\InvalidConfigException;
-use App\Infrastructure\Payments\Models\Invoice;
-use App\Infrastructure\Payments\Models\PurchaseResult;
 
-class MilitoPaymentGateway implements PaymentMethod
+abstract class GatewayAbstract implements PaymentMethod
 {
     /**
      *
@@ -15,7 +13,7 @@ class MilitoPaymentGateway implements PaymentMethod
      * @throws InvalidConfigException
      */
     public function __construct(
-        private readonly array $config
+        protected readonly array $config
     )
     {
         $this->checkConfig();
@@ -33,18 +31,7 @@ class MilitoPaymentGateway implements PaymentMethod
         }
     }
 
-    public function startPayment(Invoice $invoice): PurchaseResult
-    {
-        return new PurchaseResult(
-            "",
-            "http://localhost/milito",
-            200,
-            true
-        );
-    }
-
-    public function inquiryPayment(string $uuid): bool
-    {
-
+    protected function buildUrl(array $data):string{
+        return $this->config["url"] . "?" . http_build_query($data);
     }
 }

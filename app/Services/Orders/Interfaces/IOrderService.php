@@ -9,6 +9,7 @@ use App\Services\Orders\Entities\StartPaymentResult;
 use App\Services\Orders\Entities\SubmitOrderInput;
 use App\Services\Orders\Entities\TransactionEntity;
 use App\Services\Orders\Entities\TransactionUpdateInput;
+use App\Services\Orders\Entities\ValidateCallbackResult;
 use App\Services\Orders\Exceptions\FailedToCreateException;
 use App\Services\Orders\Exceptions\InvalidGatewayException;
 use App\Services\Orders\Exceptions\InvalidTransactionException;
@@ -63,6 +64,15 @@ interface IOrderService
      */
     public function StartPayment(OrderEntity $order, string $gateway) : StartPaymentResult;
 
+    /**
+     * Validate payment callback
+     *
+     * @param string $gateway
+     * @param array $data
+     * @return ValidateCallbackResult
+     * @throws InvalidGatewayException|\Exception
+     */
+    public function ValidateCallback(string $gateway, array $data) : ValidateCallbackResult;
 
     /**
      * Get transaction by uuid
